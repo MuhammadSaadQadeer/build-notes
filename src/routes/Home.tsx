@@ -33,6 +33,15 @@ export const Home = () => {
    * Get current URL
    */
   useEffect(() => {
+    console.log("LISTENER IS ADDED WHEN OPEEND")
+    chrome.storage.sync.get(['key'], function(result) {
+      console.log('Value currently is ' + result.key);
+      let prevData = editorRef.getData();
+      editorRef.setData(prevData.concat(result.key) )
+    });
+
+
+
     chrome.runtime.onMessage.addListener(messagesFromReactAppListener);
 
     getCurrentTabUrl((url) => {

@@ -12,6 +12,9 @@ chrome.contextMenus.onClicked.addListener(function(info, tab) {
         console.log("yay!");
     }
     chrome.runtime.sendMessage(info.selectionText)
+    chrome.storage.sync.set({key: info.selectionText}, function() {
+        console.log('Value is set to ' + info.selectionText);
+      });
 });
 
 /** Fired when the extension is first installed,

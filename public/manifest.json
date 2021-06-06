@@ -28,7 +28,8 @@
   ],
   "permissions": [
     "activeTab",
-    "contextMenus"
+    "contextMenus",
+    "storage"
   ],
   "optional_permissions": [
     "<all_urls>"
