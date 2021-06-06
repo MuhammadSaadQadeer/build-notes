@@ -14,7 +14,7 @@ const messagesFromReactAppListener = (
     sender: chrome.runtime.MessageSender,
     response: MessageResponse
 ) => {
-
+console.log("LISTENEER",message)
     const isValidated = validateSender(message, sender);
 
     if (isValidated && message.message === 'Hello from React') {

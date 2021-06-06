@@ -1,20 +1,35 @@
 export {}
+
+chrome.contextMenus.create({
+    id: "send-text",
+    title: "Add Text To Easy Note",
+    contexts: ["all"]
+});
+
+chrome.contextMenus.onClicked.addListener(function(info, tab) {
+    console.log({info})
+    if (info.menuItemId == "some-command") {
+        console.log("yay!");
+    }
+    chrome.runtime.sendMessage(info.selectionText)
+});
+
 /** Fired when the extension is first installed,
  *  when the extension is updated to a new version,
  *  and when Chrome is updated to a new version. */
 chrome.runtime.onInstalled.addListener((details) => {
     console.log('[background.js] onInstalled', details);
-    alert('[background.js] onInstalled');
+    
 });
 
 chrome.runtime.onConnect.addListener((port) => {
     console.log('[background.js] onConnect', port)
-    alert('[background.js] onInstalled');
+    
 });
 
 chrome.runtime.onStartup.addListener(() => {
     console.log('[background.js] onStartup')
-    alert('[background.js] onInstalled');
+    
 });
 
 /**
@@ -28,5 +43,8 @@ chrome.runtime.onStartup.addListener(() => {
  *  be sent and the page won't be unloaded. */
 chrome.runtime.onSuspend.addListener(() => {
     console.log('[background.js] onSuspend')
-    alert('[background.js] onSuspend');
+    
 });
+
+
+

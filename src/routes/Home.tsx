@@ -4,56 +4,61 @@ import { ChromeMessage, Sender } from "../types";
 import { getCurrentTabUId, getCurrentTabUrl } from "../chrome/utils";
 
 export const Home = () => {
-    const [url, setUrl] = useState<string>('');
-    const [responseFromContent, setResponseFromContent] = useState<string>('');
+  const [url, setUrl] = useState<string>("");
+  const [responseFromContent, setResponseFromContent] = useState<string>("");
 
-    let {push} = useHistory();
+  let { push } = useHistory();
 
-    /**
-     * Get current URL
-     */
-    useEffect(() => {
-        getCurrentTabUrl((url) => {
-            setUrl(url || 'undefined');
-        })
-    }, []);
+  const messagesFromReactAppListener = (
+    chromeMessage: any,
+    sender: chrome.runtime.MessageSender,
+    response: any
+  ) => {
+    console.log("ssss", chromeMessage);
+  };
 
-    const sendTestMessage = () => {
-        const message: ChromeMessage = {
-            from: Sender.React,
-            message: "Hello from React",
-        }
+  /**
+   * Get current URL
+   */
+  useEffect(() => {
+    chrome.runtime.onMessage.addListener(messagesFromReactAppListener);
 
-        getCurrentTabUId((id) => {
-            id && chrome.tabs.sendMessage(
-                id,
-                message,
-                (responseFromContentScript) => {
-                    setResponseFromContent(responseFromContentScript);
-                });
-        });
+    getCurrentTabUrl((url) => {
+      setUrl(url || "undefined");
+    });
+  }, []);
+
+  const sendTestMessage = () => {
+    const message: ChromeMessage = {
+      from: Sender.React,
+      message: "Hello from React",
     };
 
-    const sendRemoveMessage = () => {
-        const message: ChromeMessage = {
-            from: Sender.React,
-            message: "delete logo",
-        }
-
-        getCurrentTabUId((id) => {
-            id && chrome.tabs.sendMessage(
-                id,
-                message,
-                (response) => {
-                    setResponseFromContent(response);
-                });
+    getCurrentTabUId((id) => {
+      id &&
+        chrome.tabs.sendMessage(id, message, (responseFromContentScript) => {
+          setResponseFromContent(responseFromContentScript);
         });
+    });
+  };
+
+  const sendRemoveMessage = () => {
+    const message: ChromeMessage = {
+      from: Sender.React,
+      message: "delete logo",
     };
 
+    getCurrentTabUId((id) => {
+      id &&
+        chrome.tabs.sendMessage(id, message, (response) => {
+          setResponseFromContent(response);
+        });
+    });
+  };
 
-    return (
-        <div className="App">
-            <header className="App-header">
+  return (
+    <div style={{ width: "500px", height: "300px" }}>
+      {/* <header className="App-header">
                 <p>Home</p>
                 <p>URL:</p>
                 <p>
@@ -69,7 +74,11 @@ export const Home = () => {
                     push('/about')
                 }}>About page
                 </button>
-            </header>
-        </div>
-    )
-}
+            </header> */}
+      {/* <Editor
+        onEditorStateChange={onEditorStateChange}
+        editorState={editorText}
+      /> */}
+    </div>
+  );
+};

@@ -8,12 +8,14 @@ import './App.css';
 export const App = () => {
     return (
         <Switch>
-            <Route path="/about">
+            {/* <Route path="/about">
                 <About/>
             </Route>
             <Route path="/">
                 <Home/>
-            </Route>
+            </Route> */}
+
+<Home/>
         </Switch>
     )
 };
