@@ -1,46 +1,37 @@
 // @ts-nocheck
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+
 import { ChromeMessage, Sender } from "../types";
 import { getCurrentTabUId, getCurrentTabUrl } from "../chrome/utils";
 
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
-let editorRef = {}
+let editorRef = {};
 
 export const Home = () => {
-  const [url, setUrl] = useState<string>("");
-  const [responseFromContent, setResponseFromContent] = useState<string>("");
-
-  const [newSelection, setNewSelection] = useState("")
-
-  let { push } = useHistory();
+  const [newSelection, setNewSelection] = useState("");
 
   const messagesFromReactAppListener = (
     chromeMessage: any,
     sender: chrome.runtime.MessageSender,
     response: any
   ) => {
-    console.log("ssss", chromeMessage);
-    setNewSelection(chromeMessage)
+    setNewSelection(chromeMessage);
 
     let prevData = editorRef.getData();
-    editorRef.setData(prevData.concat(chromeMessage) )
+
+    editorRef.setData(prevData.concat(chromeMessage));
   };
 
   /**
    * Get current URL
    */
   useEffect(() => {
-    console.log("LISTENER IS ADDED WHEN OPEEND")
-    chrome.storage.sync.get(['key'], function(result) {
-      console.log('Value currently is ' + result.key);
+    chrome.storage.sync.get(["key"], function (result) {
       let prevData = editorRef.getData();
-      editorRef.setData(prevData.concat(result.key) )
+      editorRef.setData(prevData.concat(result.key));
     });
-
-
 
     chrome.runtime.onMessage.addListener(messagesFromReactAppListener);
 
@@ -79,38 +70,16 @@ export const Home = () => {
 
   return (
     <div style={{ width: "500px", height: "300px" }}>
-      {/* <header className="App-header">
-                <p>Home</p>
-                <p>URL:</p>
-                <p>
-                    {url}
-                </p>
-                <button onClick={sendTestMessage}>SEND MESSAGE</button>
-                <button onClick={sendRemoveMessage}>Remove logo</button>
-                <p>Response from content:</p>
-                <p>
-                    {responseFromContent}
-                </p>
-                <button onClick={() => {
-                    push('/about')
-                }}>About page
-                </button>
-            </header> */}
-      {/* <Editor
-        onEditorStateChange={onEditorStateChange}
-        editorState={editorText}
-      /> */}
-
       <CKEditor
         editor={ClassicEditor}
         data="<p>Hello from CKEditor 5!</p>"
         onReady={(editor) => {
           // You can store the "editor" and use when it is needed.
           console.log("Editor is ready to use!", editor);
-          editorRef = editor
+          editorRef = editor;
           let prevData = editor.getData();
-          console.log({prevData})
-          editor.setData(prevData.concat(newSelection) )
+          console.log({ prevData });
+          editor.setData(prevData.concat(newSelection));
         }}
         onChange={(event, editor) => {
           const data = editor.getData();
