@@ -1,21 +1,36 @@
-import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import React from "react";
+import { Route, Switch } from "react-router-dom";
 import { About } from "./routes/About";
 import { Home } from "./routes/Home";
+import Landing from "./routes/Landing";
 
-import './App.css';
+import { Tab } from "semantic-ui-react";
+
+import "./App.css";
+
+const panes = [
+  {
+    menuItem: "Make Note",
+    render: () => (
+      <Tab.Pane attached={false}>
+        <Home />
+      </Tab.Pane>
+    ),
+  },
+  {
+    menuItem: "Directory",
+    render: () => (
+      <Tab.Pane attached={false}>
+        <Landing />
+      </Tab.Pane>
+    ),
+  },
+];
 
 export const App = () => {
-    return (
-        <Switch>
-            {/* <Route path="/about">
-                <About/>
-            </Route>
-            <Route path="/">
-                <Home/>
-            </Route> */}
-
-<Home/>
-        </Switch>
-    )
+  return (
+    <div style={{ width: "500px", minHeight: "300px" }}>
+      <Tab defaultActiveIndex={1} menu={{ pointing: true }} panes={panes} />
+    </div>
+  );
 };

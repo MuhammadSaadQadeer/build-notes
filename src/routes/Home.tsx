@@ -6,6 +6,7 @@ import { getCurrentTabUId, getCurrentTabUrl } from "../chrome/utils";
 
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { Segment, Button } from "semantic-ui-react";
 
 let editorRef = {};
 
@@ -79,22 +80,33 @@ export const Home = () => {
   // };
 
   return (
-    <div style={{ width: "500px", height: "300px" }}>
-      <CKEditor
-        editor={ClassicEditor}
-        // data={contentState}
-        onReady={(editor) => {
-          // You can store the "editor" and use when it is needed.
-          editorRef = editor;
-          editor.setData(editor.getData().concat(newSelection));
-        }}
-        onChange={(event, editor) => {
-          const data = editor.getData();
-          chrome.storage.sync.set({ string: data });
-        }}
-        onBlur={(event, editor) => {}}
-        onFocus={(event, editor) => {}}
-      />
+    <div>
+      <>
+        <CKEditor
+          editor={ClassicEditor}
+          // data={contentState}
+          onReady={(editor) => {
+            // You can store the "editor" and use when it is needed.
+            editorRef = editor;
+            editor.setData(editor.getData().concat(newSelection));
+          }}
+          onChange={(event, editor) => {
+            const data = editor.getData();
+            chrome.storage.sync.set({ string: data });
+          }}
+          onBlur={(event, editor) => {
+            console.log(editor.getData())
+          }}
+          onFocus={(event, editor) => {}}
+        />
+
+
+        <Button style={{
+          marginTop:10
+        }}>
+         Save Note
+        </Button>
+      </>
     </div>
   );
 };
