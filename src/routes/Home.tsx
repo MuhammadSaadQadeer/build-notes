@@ -28,22 +28,18 @@ export const Home = () => {
    * Get current URL
    */
   useEffect(() => {
-    //  localStorage.setItem("string", "string")
-    let res = localStorage.getItem("string");
-
-    chrome.storage.sync.get(["key"], function (result) {
+    chrome.storage.sync.get(["key", "string"], function (result) {
       // Adding the formatted data in editor if any
       let previousState = "";
-      if (res) {
+      if (result["string"]) {
         previousState = editorRef.getData();
-        editorRef.setData(previousState.concat(res));
+        editorRef.setData(previousState.concat(result["string"]));
       }
 
       if (result.key) {
         previousState = editorRef.getData();
         editorRef.setData(previousState.concat(result.key));
-        localStorage.removeItem("string");
-        chrome.storage.sync.remove(["key"]);
+        chrome.storage.sync.remove(["key", "string"]);
       }
     });
 
@@ -94,8 +90,7 @@ export const Home = () => {
         }}
         onChange={(event, editor) => {
           const data = editor.getData();
-          console.log({ event, editor, data });
-          localStorage.setItem("string", data);
+          chrome.storage.sync.set({ string: data });
         }}
         onBlur={(event, editor) => {}}
         onFocus={(event, editor) => {}}
